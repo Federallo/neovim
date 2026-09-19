@@ -1,8 +1,8 @@
 local lsp_zero = require('lsp-zero')
 
-lsp_zero.on_attach(function(client,bufnr)
-	lsp_zero.default_keymaps({buffer = bufnr})
-	vim.api.nvim_create_autocmd("CursorHold", {
+lsp_zero.on_attach(function(client, bufnr)
+    lsp_zero.default_keymaps({buffer = bufnr})
+    vim.api.nvim_create_autocmd("CursorHold", {
         buffer = bufnr,
         callback = function()
             local opts = {
@@ -19,31 +19,52 @@ lsp_zero.on_attach(function(client,bufnr)
 end)
 
 require('mason-lspconfig').setup({
-	ensure_installed = {
-		'ts_ls', 
-		'rust_analyzer', 
-		'docker_compose_language_service',
-		'dockerls',
-		'html',
-		'hls',--haskell
-		'java_language_server',
-		'quick_lint_js',
-		'ltex',
-		'lua_ls',
-		'jedi_language_server',--python
+    ensure_installed = {
+        'ts_ls', 
+        'rust_analyzer', 
+        'docker_compose_language_service',
+        'dockerls',
+        'html',
+        'hls',
+        'jdtls',
+        'lua_ls',
+        'jedi_language_server',
+        'ltex', -- Rimesso se vuoi usarlo
+    },
+    handlers = {
+        -- Il setup di default di lsp-zero per tutti i server
+        lsp_zero.default_setup,
 
-	},
-	handlers = {
-		lsp_zero.default_setup,
-		--myserver = function()
-		--	require('lspconfig').myserver.setup({
-		--	})
-		--end,
-	},
+        -- 🔥 Configurazione speciale per forzare il controllo degli errori in JS/JSX
+        ts_ls = function()
+            require('lspconfig').ts_ls.setup({
+                settings = {
+                    javascript = {
+                        implicitProjectConfig = {
+                            checkJs = true, -- <--- QUESTO FORZA IL CONTROLLO ERRORI NEI FILE JS/JSX!
+                            jsx = "react"
+                        },
+                    },
+                },
+            })
+        end,
+
+        -- 🔥 Configurazione corretta per ltex (spostata qui dentro!)
+        ltex = function()
+            require('lspconfig').ltex.setup({
+                filetypes = { "markdown", "tex", "bib" },
+                settings = {
+                    ltex = {
+                        enabled = { "markdown", "tex", "bib" },
+                    },
+                },
+            })
+        end,
+    },
 })
 
 vim.diagnostic.config({
-  virtual_text = true, -- Mostra l'errore a fine riga (molto utile)
+  virtual_text = true, 
   severity_sort = true,
   float = {
     style = 'minimal',
