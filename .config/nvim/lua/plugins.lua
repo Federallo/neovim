@@ -12,10 +12,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	--autocompletition
-	{'williamboman/mason.nvim'},
-	{'williamboman/mason-lspconfig.nvim'},
+	{'williamboman/mason.nvim', version = 'v1.10.0'},
+	{'williamboman/mason-lspconfig.nvim', version = 'v1.31.0'},
 	{'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
-	{'neovim/nvim-lspconfig'},
+	{'neovim/nvim-lspconfig', version = 'v1.8.0'},
 	{'hrsh7th/cmp-nvim-lsp'},
 	{'hrsh7th/nvim-cmp'},
 	{'L3MON4D3/LuaSnip'},
@@ -27,7 +27,7 @@ require("lazy").setup({
 	'goolord/alpha-nvim',--main menu
 	'github/copilot.vim',
 	'nvim-lua/plenary.nvim',
-	'nvim-telescope/telescope.nvim',--finder
+	{'nvim-telescope/telescope.nvim', tag = '0.1.8'},--finder
 	'akinsho/bufferline.nvim',--tabs
 	tag = "v3.*",
 	'ellisonleao/gruvbox.nvim',--theme
