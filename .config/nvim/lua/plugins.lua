@@ -37,3 +37,14 @@ require("lazy").setup({
 --setting theme
 vim.o.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
+
+local lsp_zero = require('lsp-zero')
+local cmp = require('cmp')
+
+-- Gestione del tasto Invio intelligente
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    -- Conferma con Invio SOLO se hai selezionato attivamente un suggerimento
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  })
+})
